@@ -22,7 +22,7 @@ struct si_dict {
 };
 
 SIdict makeSIdict() {
-  SIdict d = (SIdict) malloc(sizeof(struct si_dict));
+    SIdict d = (SIdict) malloc(sizeof(struct si_dict));
     d->front = NULL;
     return d;
 }

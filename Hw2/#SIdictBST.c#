@@ -1,0 +1,110 @@
+/* E. Taber McFarlin
+	I pledge my honor I have abided by the Stevens Honor System.
+*/
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include <string.h>
+
+#include "SIdict.h"
+
+#define MAXKEYCHARS 32
+
+/* SIdict represented by binary search tree. 
+
+   Each function assumes the preconditions that 
+   the dictionary and key parameters are non-null.
+*/
+
+typedef struct tnode* Tnode;
+struct tnode { char *key;
+               int val; 
+               Tnode left; 
+               Tnode right; };
+
+struct si_dict { Tnode root; };
+
+SIdict makeSIdict() {
+  SIdict d = (SIdict) malloc(sizeof(struct si_dict));
+  d->root = NULL;
+  return d;
+}
+
+int hasKey(SIdict d, char *key) {
+  Tnode current = d->root;
+  
+  while (current != NULL && strcmp(current->key, key) != 0) {
+    if (strcmp(current->key, key) > 0)
+      current = current->right;
+    else
+      current = current->left;
+  }
+  
+  return (current != NULL);
+}
+
+int addOrUpdate(SIdict d, char *key, int val) {
+  Tnode current = d->root;
+  Tnode previous;
+ 
+  while (current != NULL && strcmp(current->key, key) != 0) {
+    previous = current;
+    
+    if (strcmp(current->key, key) < 0)
+      current = current->right;
+    else
+      current = current->left;
+  }
+
+  if (current == NULL) {
+    current = (Tnode) malloc(sizeof(struct tnode));
+    current->key = key;
+    current->val = val;
+
+    if (d->root == NULL)
+      d->root = current;
+    
+    else {
+      if (strcmp(current->key, previous->key) < 0)
+	previous->right = current;
+      else
+	previous->left = current;
+    }
+
+    return 0;
+  }
+
+  else {
+    current->val = val;
+    return 1;
+  }
+}
+
+int lookup(SIdict d, char* key) {
+  if (d->root->key == key)
+    return d->root->val;
+  else {
+    SIdict d2 = makeSIdict();
+
+    if (strcmp(d->root->key, key) > 0)
+      d2->root = d->root->left;
+    else
+      d2->root = d->root->right;
+
+    return lookup(d2, key);
+  }
+}
+
+int main() {
+  SIdict dict = makeSIdict();
+  char k[3] = "hi";
+  char l[3] = "Hy";
+  
+  printf("%d\n", addOrUpdate(dict, k, 0));
+  printf("%d\n", addOrUpdate(dict, l, 7));
+  printf("%d\n", addOrUpdate(dict, k, 1));
+  printf("%d\n", hasKey(dict, k));
+  printf("%d\n", hasKey(dict, l));
+  printf("%s\n", dict->root->left->key);
+printf("%d\n", lookup(dict, l));
+}

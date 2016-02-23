@@ -74,3 +74,4 @@ to indicate end of sequence.
 Precondition: target is in range.
 */
 int* predecessors(Graph G, int target);
+

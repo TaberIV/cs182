@@ -128,7 +128,7 @@ int* successors(Graph G, int source) {
 
   int i, numVerts = 0;
   for (i = 0; i < G->n; i++) {
-    if (G->matrix[i] != INFINITY) {
+    if (G->matrix[source][i] != INFINITY) {
       targets[numVerts] = i;
       numVerts++;
     }
@@ -136,5 +136,13 @@ int* successors(Graph G, int source) {
 }
 
 int* predecessors(Graph G int target) {
+  int* sources = malloc(sizeof(int[G->n + 1]));
 
+  int i, numVerts = 0;
+  for (i = 0; i < G->n; i++) {
+    if (G->matrix[i][target] != INFINITY) {
+      targets[numVerts] = i;
+      numVerts++;
+    }
+  }
 }

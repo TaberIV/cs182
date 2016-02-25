@@ -27,15 +27,6 @@ SIdict makeSIdict() {
     return d;
 }
 
-int hasKey(SIdict dict, char*key) {
-    Node current = dict->front;
-    while(current != NULL && strcmp(current->key, key) != 0) {
-        current = current->next;
-    }
-    if(current == NULL) return 0;
-    else return 1;
-}
-
 int addOrUpdate(SIdict dict, char* key, int val) {
     Node current = dict->front;
     while(current != NULL && strcmp(current->key, key) != 0) {

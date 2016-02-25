@@ -4,7 +4,25 @@
 #include <math.h>
 
 #include "graph.h"
-#include "SIdict.c"
+
+//Define linked list-----------------------------
+typedef struct node* Node;
+struct node {
+  float weight;
+  int target;
+  Node next;
+};
+
+struct si_dict {
+  Node front;
+};
+
+SIdict makeSIdict() {
+  SIdict d = (SIdict) malloc(sizeof(struct si_dict));
+    d->front = NULL;
+    return d;
+}
+//-----------------------------------------------
 
 //typedef struct graph* Graph;
 struct graph {
@@ -53,8 +71,8 @@ Graph cloneGraph(Graph G, int rep) {
 	  g->matrix[i][j] = G->matrix[i][j];
     }
     else {
-      //Copy linked list
-      return NULL;
+      for (i = 0; i < g->n; i++)
+	for (j = 0; 
     }
   }
   else {

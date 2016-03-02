@@ -1,0 +1,12 @@
+#include "dfs.h"
+
+#define white 0
+#define gray 0
+#define black 0
+
+int count;
+int* color = malloc(numVerts(G) * sizeOf(int))
+
+DFSinfo DFS(Graph G) {
+  
+}

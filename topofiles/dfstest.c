@@ -6,8 +6,8 @@
 #include <string.h>
 #include <assert.h>
 
-#include "graph.h"
-#include "dfs.h"
+#include "graph.c"
+#include "dfs.c"
 
 #define DEFAULT_WEIGHT 1.0 
 
@@ -91,15 +91,10 @@ GraphInfo readGraph(char* path, int repType) {
     float weight;
     int result = fscanf(infile, "%s %s %f", source, target, &weight);
     while( result != EOF) {
-	if (result >= 2 ) { // read at least two items
-	    if (result == 2) // weight not included
-		weight = DEFAULT_WEIGHT;
-	    addEdge(gi->graph, indexOf(gi, source), indexOf(gi, target), weight);
-	    result = fscanf(infile, "%s %s %f", source, target, &weight);
-	} else { 
-	    fprintf(stderr, "readGraph fatal error: unexpected file format in %s\n", path);
-	    exit(1);
-	}
+      if (result == 2) // weight not included
+	weight = DEFAULT_WEIGHT;
+      addEdge(gi->graph, indexOf(gi, source), indexOf(gi, target), weight);
+      result = fscanf(infile, "%s %s %f", source, target, &weight);
     }
 
     /* clean up and return */

@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <stdio.h>
 #include "dfs.h"
 
 #define white 0
@@ -7,21 +9,6 @@
 int count;
 int* color;
 DFSinfo info;
-
-DFSinfo DFS(Graph G) {
-  info = (DFSinfo) malloc(sizeof(struct dfsinfo));
-  info->graph = G;
-  info->discover = malloc(numVerts(G) * sizeof(int));
-  info->finish = malloc(nnumVerts(G) * sizeof(int));
-  info->parent = malloc(nnumVerts(G) * sizeof(int));
-
-  color = (int*) malloc(numVerts(G) * sizeof(int));
-
-  int i;
-  for (i = 0; i < numVerts(G); i++)
-    if (color[i] == white)
-      dfsvisit(i);
-}
 
 void dfsvisit(int i) {
   color[i] = gray;
@@ -34,4 +21,24 @@ void dfsvisit(int i) {
       info->parent[j] = i;
       dfsvisit(j);
     }
+  color[i] = black;
+  count++;
+  info->finish[i] = count;
+}
+
+DFSinfo DFS(Graph G) {
+  info = (DFSinfo) malloc(sizeof(struct dfsinfo));
+  info->graph = G;
+  info->discover = (int*) malloc(numVerts(G) * sizeof(int));
+  info->finish = (int*) malloc(numVerts(G) * sizeof(int));
+  info->parent = (int*) malloc(numVerts(G) * sizeof(int));
+  color = (int*) malloc(numVerts(G) * sizeof(int));
+  count = 0;
+  
+  int i;
+  for (i = 0; i < numVerts(G); i++)
+    if (color[i] == white)
+      dfsvisit(i);
+
+  return info;
 }

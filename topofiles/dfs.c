@@ -10,6 +10,7 @@ int count;
 int fincount;
 int* color;
 DFSinfo info;
+int level;
 
 void dfsvisit(int i) {
   color[i] = gray;
@@ -20,7 +21,9 @@ void dfsvisit(int i) {
   for(j = 0; successors(info->graph, i)[j] != -1; j++)
     if (color[j] == white) {
       info->parent[j] = i;
-      printf("To visit: %d\n", successors(info->graph, i)[j]);
+      //level++;
+      //printf("VisitingR: %d, %d\n", successors(info->graph, i)[j], level);
+      //level--;
       dfsvisit(successors(info->graph, i)[j]);
     }
   color[i] = black;
@@ -37,17 +40,25 @@ DFSinfo DFS(Graph G) {
   info->finish = (int*) malloc(numVerts(G) * sizeof(int));
   info->parent = (int*) malloc(numVerts(G) * sizeof(int));
   info->finorder = (int*) malloc(numVerts(G) * sizeof(int));
+  color = (int*) malloc(numVerts(G) * sizeof(int));
   int i;
   for (i = 0; i < numVerts(G); i++) {
     info->parent[i] = -1;
+    info->discover[i] = -1;
+    info->finish[i] = -1;
+    info->parent[i] = -1;
+    info->finorder[i] = -1;
+    color[i] = white;
   }
-  color = (int*) malloc(numVerts(G) * sizeof(int));
+  
   count = 0;
   fincount = 0;
   
   for (i = 0; i < numVerts(G); i++)
-    if (color[i] == white)
+    if (color[i] == white) {
+      //printf("Visiting: %d\n", i);
       dfsvisit(i);
+    }
 
   return info;
 }

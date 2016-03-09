@@ -36,9 +36,9 @@ int proper_ancestor(DFSinfo di, int anc, int v) {
 
 void topocycle(GraphInfo gi) {
   DFSinfo di = DFS(gi->graph);
-  printf("C SUCKS\n");
-  //Check for cycles---------------------
-  int i, j, found = 0;
+  int found = 0;
+  /*Check for cycles---------------------
+  int i, j;
   for (i = 0; i < numVerts(gi->graph) && found != 1; i++) {
     for (j = 0; j < numVerts(gi->graph); j++)
       if (proper_ancestor(di, i, j)) {
@@ -48,7 +48,7 @@ void topocycle(GraphInfo gi) {
     if (found == 1)
       break;
   }
-  //-------------------------------------
+  */-------------------------------------
 
   if (found == 1) {
     printf("cycle\n");

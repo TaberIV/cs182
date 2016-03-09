@@ -110,16 +110,16 @@ GraphInfo readGraph(char* path, int repType) {
 int main() {
     GraphInfo gi; 
     DFSinfo di;
-
-    gi = readGraph("statesContig.txt", LIST);
-    di = DFS(gi->graph);
     int i;
+    /*gi = readGraph("statesContig.txt", LIST);
+    di = DFS(gi->graph);
     for (i = 0; i < numVerts(gi->graph); i++) {
       printf("%d\t", di->finorder[i]);
     }
-    printf("\n");
+    printf("\n");*/
 
-    gi = readGraph("prereqs.txt", LIST);
+    
+    gi = readGraph("statesContig.txt", LIST);
     di = DFS(gi->graph);
     for (i = 0; i < numVerts(gi->graph); i++)
       printf("%d ", di->finorder[i]);

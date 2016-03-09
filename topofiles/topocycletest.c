@@ -66,15 +66,14 @@ int main() {
     printf("\nTopological sort by DFS technique %s\n", filepath);
     gi = readGraph(filepath, MATRIX); // MUST read again or clone original since toposort2 deletes
     topocycle(gi);
-    
+
 
     filepath = "LevitinTopo.txt";
     gi = readGraph(filepath, MATRIX);
-    printf("Topological sort by predecessor technique %s\n", filepath);
+    printf("\n\nTopological sort by predecessor technique %s\n", filepath);
     toposort2(gi);
     printf("\nTopological sort by DFS technique %s\n", filepath);
-    gi = readGraph(filepath, MATRIX); // MUST read again or clone original since toposort2 deletes
-    topocycle(gi);
+    topocycle(readGraph(filepath, MATRIX));
 
 
     filepath = "prereqs.txt";
@@ -82,14 +81,12 @@ int main() {
     printf("\nTopological sort by predecessor technique %s\n", filepath);
     toposort2(gi);
     printf("\nTopological sort by DFS technique %s\n", filepath);
-    gi = readGraph(filepath, MATRIX); // MUST read again or clone original since toposort2 deletes
-    topocycle(gi);
+    topocycle(readGraph(filepath, MATRIX));
 
 
     filepath = "prereqCatch22.txt";
     printf("\nCyclic graph %s\n", filepath);
-    gi = readGraph(filepath, MATRIX); // MUST read again or clone original since toposort2 deletes
-    topocycle(gi);
+    topocycle(readGraph(filepath, LIST));
 
 
     /* NOTE: not disposing of the graphs */ 

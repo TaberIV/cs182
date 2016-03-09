@@ -18,14 +18,17 @@ void dfsvisit(int i) {
   info->discover[i] = count;
 
   int j;
-  for(j = 0; successors(info->graph, i)[j] != -1; j++)
-    if (color[j] == white) {
+  for(j = 0; successors(info->graph, i)[j] != -1; j++) {
+    //printf("%d\t", successors(info->graph, i)[j]);
+    if (color[successors(info->graph, i)[j]] == white) {
       info->parent[j] = i;
-      //level++;
-      //printf("VisitingR: %d, %d\n", successors(info->graph, i)[j], level);
-      //level--;
+      level++;
+      printf("VisitingR: %d, %d\t", successors(info->graph, i)[j], level);
+      printf("i: %d\n", i);
       dfsvisit(successors(info->graph, i)[j]);
+      level--;
     }
+  }
   color[i] = black;
   info->finorder[fincount] = i;
   count++;
@@ -56,7 +59,7 @@ DFSinfo DFS(Graph G) {
   
   for (i = 0; i < numVerts(G); i++)
     if (color[i] == white) {
-      //printf("Visiting: %d\n", i);
+      printf("Visiting: %d\n", i);
       dfsvisit(i);
     }
 

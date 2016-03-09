@@ -111,7 +111,7 @@ int main() {
     GraphInfo gi; 
     DFSinfo di;
     int i;
-    /*gi = readGraph("statesContig.txt", LIST);
+    /*gi = readGraph("LevitinTopo.txt", LIST);
     di = DFS(gi->graph);
     for (i = 0; i < numVerts(gi->graph); i++) {
       printf("%d\t", di->finorder[i]);
@@ -119,7 +119,7 @@ int main() {
     printf("\n");*/
 
     
-    gi = readGraph("statesContig.txt", LIST);
+    gi = readGraph("LevitinTopo.txt", LIST);
     di = DFS(gi->graph);
     for (i = 0; i < numVerts(gi->graph); i++)
       printf("%d ", di->finorder[i]);

@@ -17,10 +17,11 @@ void dfsvisit(int i) {
   info->discover[i] = count;
 
   int j;
-  for(j = 0; j < sizeof(successors(info->graph, i)) / sizeof(int); j++)
+  for(j = 0; successors(info->graph, i)[j] != -1; j++)
     if (color[j] == white) {
       info->parent[j] = i;
-      dfsvisit(j);
+      printf("To visit: %d\n", successors(info->graph, i)[j]);
+      dfsvisit(successors(info->graph, i)[j]);
     }
   color[i] = black;
   info->finorder[fincount] = i;

@@ -7,7 +7,6 @@
 
 /* PARTIAL IMPLEMENTATION OF graph.h *************************************** */
 
-
 /* list node to represent an edge, for adjacency list */
 struct eNode {
     float wt;
@@ -15,7 +14,6 @@ struct eNode {
     struct eNode* next; 
 };
 typedef struct eNode* ENode;
-
 
 /* The graph; see graph.h for type Graph. 
    Depending on the repType field, one of the fields adjM or aLists is not used.
@@ -64,7 +62,7 @@ Graph makeGraph(int n, int rep) {
    specified by rep (which is assumed to be MATRIX or LIST) 
    Known bug: not implemented
 */
-Graph cloneGraph(Graph g, int rep){ 
+ Graph cloneGraph(Graph g, int rep){ 
     printf("cloneGraph not supported.\n");
     exit(1); 
 }
@@ -78,8 +76,9 @@ Graph cloneGraph(Graph g, int rep){
 void disposeGraph(Graph g) {
     if (g->repType == MATRIX)
 	free(g->adjM);
-    else  // repType is LIST
+    else { // repType is LIST
 	free(g->aList);
+    }
     free(g);
 }
 
@@ -221,8 +220,8 @@ int* predecessors(Graph g, int target) {
     int pred[n]; // temporary array, big enough for all possible predecessors
     int npred = 0; // number of predecessors
     for (int src = 0; src < g->numVerts; src++) 
-        if ( *(g->adjM + (n*src) +target) != INFINITY ) 
-            pred[npred++] = src;
+	    if ( *(g->adjM + (n*src) +target) != INFINITY ) 
+		pred[npred++] = src;
     /* allocate and return an array the right size */
     int* result = (int*) malloc((npred + 1) * sizeof(int));
     for (int i = 0; i < npred; i++)

@@ -9,7 +9,7 @@
 #include "graph.c"
 #include "dfs.c"
 
-#define DEFAULT_WEIGHT 1.0 
+#define DEFAULT_WEIGHT 1.0
 
 #define MAX_NAMELEN 32 /* max length of a vertex name */
 
@@ -113,17 +113,9 @@ int main() {
 
     gi = readGraph("statesContig.txt", LIST);
     di = DFS(gi->graph);
-    int i;
-    for (i = 0; i < numVerts(gi->graph); i++) {
-      printf("%d\t", di->finorder[i]);
-    }
-    printf("\n");
 
     gi = readGraph("prereqs.txt", LIST);
     di = DFS(gi->graph);
-    for (i = 0; i < numVerts(gi->graph); i++)
-      printf("%d ", di->finorder[i]);
-    printf("\n");
-      
+
     return 0;
 }

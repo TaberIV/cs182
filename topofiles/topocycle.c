@@ -38,11 +38,21 @@ void topocycle(GraphInfo gi) {
   DFSinfo di = DFS(gi->graph);
   
   //Check for cycles---------------------
-  int found = 0;
+  int found = 0, vert;
+  for (i = 1; i <= numVerts(di->graph); i++) {
+    vert = di->finorder[numVerts(di->graph) - i];
+    if (proper_ancestor(di, di->parent[vert], vert)) {
+      found = 1;
+      break;
+    }
+  }
   //-------------------------------------
-    
+
   if (found == 1) {
-    printf("cycle\n");
+    printf("There is a cycle: \n");
+    int* cycle = (int*) malloc(numVerts(di->graph) * sizeof(int));
+    int index = 0;
+    
   }
   else {
     int i;

@@ -12,6 +12,7 @@ int* color;
 DFSinfo info;
 
 void dfsvisit(int i) {
+  
   color[i] = gray;
   count++;
   info->discover[i] = count;

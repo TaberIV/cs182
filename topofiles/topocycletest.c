@@ -59,7 +59,7 @@ int main() {
     char* filepath;
     GraphInfo gi;
 
-    filepath = "series.txt";
+    filepath = "cycle3.txt";
     gi = readGraph(filepath, MATRIX);
     printf("Topological sort by predecessor technique %s\n", filepath);
     toposort2(gi); 

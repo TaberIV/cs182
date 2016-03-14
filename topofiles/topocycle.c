@@ -36,28 +36,50 @@ int proper_ancestor(DFSinfo di, int anc, int v) {
 
 void topocycle(GraphInfo gi) {
   DFSinfo di = DFS(gi->graph);
-  
+  int i, j;
   //Check for cycles---------------------
-  int found = 0, vert;
-  for (i = 1; i <= numVerts(di->graph); i++) {
-    vert = di->finorder[numVerts(di->graph) - i];
-    if (proper_ancestor(di, di->parent[vert], vert)) {
-      found = 1;
-      break;
+  int found = 0;
+  for (i = 0; i < numVerts(di->graph); i++) {
+    for(j = 0; successors(di->graph, i)[j] != -1; j++) {
+      if (proper_ancestor(di, successors(di->graph, di->finorder[i])[j], di->finorder[i])) {
+	  found = 1;
+	  break;
+      }
     }
+    if (found)
+      break;
   }
   //-------------------------------------
 
   if (found == 1) {
     printf("There is a cycle: \n");
     int* cycle = (int*) malloc(numVerts(di->graph) * sizeof(int));
-    int index = 0;
+    int vert = di->finorder[i], index = 0, endVert = vert;
+    found = 0;
+
+    printf("%d\n", vert);
+    printf("%d\n", di->parent[vert]);
+    printf("%d\n", di->parent[di->parent[vert]]);
+    while(found == 0) {
+      cycle[index] = vert;
+      index++;
+
+      assert(vert != -1);
+      if (successors(di->graph, vert)[j] == endVert)
+	found = 1;
+    }
+    
+    assert(found == 1);
+    cycle[index] = i;
+
+    for (; index >= 0; index--)
+      printf("%s ", gi->vertnames[cycle[index]]);
+    printf("%s ", gi->vertnames[i]);
     
   }
   else {
-    int i;
     for (i = 1; i <= numVerts(di->graph); i++)
-      printf("%d ", di->finorder[numVerts(di->graph) - i]);
+      printf("%s ", gi->vertnames[di->finorder[numVerts(di->graph) - i]]);
     printf("\n");
   }
 }

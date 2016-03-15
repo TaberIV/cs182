@@ -39,7 +39,3 @@ void quicksortPlus(char* arr[], int l, int r);
  * For each of the three sort functions, run it 20 times on arr, and print the total time.
  */ 
 void compareSorts(char* arr[], int len);
-
-
-
-

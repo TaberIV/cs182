@@ -1,0 +1,5 @@
+#include "sorting.c"
+
+main() {
+  printf("Compile Successful\n");
+}

@@ -3,6 +3,7 @@
 int main() {
   int* arr = malloc(5 * sizeof(int));
 
+  
   arr[0] = 3;
   arr[1] = 9;
   arr[2] = 1;
@@ -16,9 +17,13 @@ int main() {
   strcpy(arr[2], "Gavin");
   strcpy(arr[3], "Nick");
   strcpy(arr[4], "Cheyenne");*/
-  
-  quicksort(arr, 0, 5);
 
+  printf("Unsorted: \n");
+  for (int i = 0; i < 5; i++)
+    printf("%d \n", arr[i]);
+
+  printf("\nQuicksort: \n");
+  quicksort(arr, 0, 5);
   for (int i = 0; i < 5; i++)
     printf("%d \n", arr[i]);
 }

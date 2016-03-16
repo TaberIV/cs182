@@ -2,13 +2,8 @@
 
 int main() {
   char* arr[5] = {"Taber", "Brendan", "Gavin", "Nick", "Cheyenne"};
-  /*
-  strcpy(arr[0], "Taber");
-  strcpy(arr[1], "Brendan");
-  strcpy(arr[2], "Gavin");
-  strcpy(arr[3], "Nick");
-  strcpy(arr[4], "Cheyenne");
-  */
+  char* arr1[5] = {"Taber", "Brendan", "Gavin", "Nick", "Cheyenne"};
+  
   printf("Unsorted: \n");
   for (int i = 0; i < 5; i++)
     printf("%s \n", arr[i]);
@@ -17,4 +12,9 @@ int main() {
   insertionsort(arr, 0, 5);
   for (int i = 0; i < 5; i++)
     printf("%s \n", arr[i]);
+  
+  printf("\nQuicksort: \n");
+  quicksort(arr1, 0, 5);
+  for (int i = 0; i < 5; i++)
+    printf("%s \n", arr1[i]);
 }

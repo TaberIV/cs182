@@ -10,7 +10,35 @@ void swap(char* arr[], int a, int b) {
   arr[b] = temp;
 }
 
+int binarySearch(char* arr[], char* item, int l, int r) {
+  if (r <= l)
+    return (strcmp(item, arr[l]))? (l + 1) : l;
+
+  int mid = (l + r)/2;
+
+  if (item == arr[mid])
+    return mid + 1;
+  if (item > arr[mid])
+    return binarySearch(arr, item, mid + 1, r);
+  return binarySearch(arr, item, l, mid - 1);
+}
+
 void insertionsort(char* arr[], int l, int r) {
+  int loc, j, k;
+  char* item;
+  for (int i = l + 1; i < r; i++) {
+    j = i - 1;
+    item = arr[i];
+    loc = binarySearch(arr, item, l, j);
+    while (j >= loc) {
+      arr[j + 1] = arr[j];
+      j--;
+    }
+    arr[loc] = item;
+  } 
+}
+
+void insertionsort0(char* arr[], int l, int r) {
   for (int i = l + 1; i < r; i++)
     for (int j = i; j > 0 && strcmp(arr[j - 1], arr[j]) > 0; j--)
       swap(arr, j - 1, j);
@@ -19,52 +47,6 @@ void insertionsort(char* arr[], int l, int r) {
 void quicksort(char* arr[], int i, int r) {
   
 }
-
-/*void quicksort(char* arr[], int i, int r) {
-  for (int i = 0; i < 5; i++)
-<<<<<<< HEAD
-    printf("%d \n", arr[i]);
-  printf("\n");
-  
-  int start = i;
-  int end = r;
-  int pivot = arr[i];
-  if (r - i > 0) {
-=======
-    printf("%s \n", arr[i]);
-  
-  int start = i;
-  int end = r;
-  char* pivot = arr[i];
-  if (r - i > 1) {
->>>>>>> 57fa821ed0ef8177b0eb986fbf6ff591c96d8260
-    while (i < r-1) {
-      while (i < r && strcmp(arr[i], pivot) <= 0) {
-	printf("Increment i\n");
-	i++;
-      }
-<<<<<<< HEAD
-      while (r > i && arr[r - 1] > pivot) {
-	printf("Decrement r\n");
-	r--;
-      }
-      printf("Loop swap indecies %d and %d (values %d and %d)\n", i, r - 1, arr[i], arr[r - 1]);
-      
-=======
-      while (r-1 > i && strcmp(arr[r - 1], pivot) > 0) {
-	printf("Decrement r\n");
-	r--;
-      }
-      printf("Swap indecies %d and %d (values %s and %s)\n", i, r - 1, arr[i], arr[r - 1]);
->>>>>>> 57fa821ed0ef8177b0eb986fbf6ff591c96d8260
-      swap(arr, i, r - 1);
-    }
-    printf("Sort from %d to %d\n", start, i - 1);
-    quicksort(arr, start, i - 1);
-    printf("Sort from %d to %d\n", r, end);
-    quicksort(arr, r, end);
-  }
-  }*/
 
 void quicksortPlus(char* arr[], int i, int r) {
 

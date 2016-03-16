@@ -18,24 +18,25 @@ void insertionsort(int* arr, int l, int r) {
 void quicksort(int* arr, int i, int r) {
   for (int i = 0; i < 5; i++)
     printf("%d \n", arr[i]);
+  printf("\n");
   
   int start = i;
   int end = r;
   int pivot = arr[i];
-  if (r - i > 1) {
+  if (r - i > 0) {
     while (i < r-1) {
       while (i < r && arr[i] <= pivot) {
 	printf("Increment i\n");
 	i++;
       }
-      while (r-1 > i && arr[r - 1] > pivot) {
+      while (r > i && arr[r - 1] > pivot) {
 	printf("Decrement r\n");
 	r--;
       }
-      printf("Swap indecies %d and %d (values %d and %d)\n", i, r - 1, arr[i], arr[r - 1]);
+      printf("Loop swap indecies %d and %d (values %d and %d)\n", i, r - 1, arr[i], arr[r - 1]);
+      
       swap(arr, i, r - 1);
     }
-    swap(arr, start, i - 1);
     printf("Sort from %d to %d\n", start, i - 1);
     quicksort(arr, start, i - 1);
     printf("Sort from %d to %d\n", r, end);

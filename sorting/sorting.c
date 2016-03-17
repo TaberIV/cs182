@@ -38,12 +38,6 @@ void insertionsort(char* arr[], int l, int r) {
   } 
 }
 
-void insertionsort0(char* arr[], int l, int r) {
-  for (int i = l + 1; i < r; i++)
-    for (int j = i; j > 0 && strcmp(arr[j - 1], arr[j]) > 0; j--)
-      swap(arr, j - 1, j);
-}
-
 void quicksort(char* arr[], int i, int r) {
   
 }

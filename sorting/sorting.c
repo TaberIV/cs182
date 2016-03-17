@@ -12,13 +12,13 @@ void swap(char* arr[], int a, int b) {
 
 int binarySearch(char* arr[], char* item, int l, int r) {
   if (r <= l)
-    return (strcmp(item, arr[l]))? (l + 1) : l;
+    return (strcmp(item, arr[l]) > 0)? (l + 1) : l;
 
   int mid = (l + r)/2;
 
-  if (item == arr[mid])
+  if (strcmp(item, arr[mid]) == 0)
     return mid + 1;
-  if (item > arr[mid])
+  if (strcmp(item, arr[mid]) > 0)
     return binarySearch(arr, item, mid + 1, r);
   return binarySearch(arr, item, l, mid - 1);
 }
@@ -34,7 +34,7 @@ void insertionsort(char* arr[], int l, int r) {
       arr[j + 1] = arr[j];
       j--;
     }
-    arr[loc] = item;
+    arr[j + 1] = item;
   } 
 }
 

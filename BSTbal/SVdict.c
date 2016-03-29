@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+
 #include "SVdict.h"
 
 struct sv_dict {
@@ -33,7 +34,7 @@ int hasKey(SVdict d, char* key) {
     
     if (strcmp(check, key) == 0)
       return 1;
-    else if (strcmp(check, key) > 0)
+    else if (strcmp(check, key) < 0)
       d = d->right;
     else
       d = d->left;
@@ -41,21 +42,13 @@ int hasKey(SVdict d, char* key) {
   return 0;
 }
 
-int addOrUpdate(SVdict d, char* key, void* val) {
-  char* check;
-  
-  while (d != NULL && d->key != NULL) {
-    printf("MEH\n");
-    check = d->key;
-    
-    if (strcmp(check, key) == 0) {
+int addOrUpdate(SVdict d, char* key, void* val) {  
+  while (d != NULL && d->key != NULL) {    
+    if (strcmp(d->key, key) == 0) {
       d->val = val;
       return 1;
     }
-    else if (strcmp(check, key) > 0) {
-      printf("Moo\n");
-      if (d->right == NULL)
-	d->right = makeSVdict();
+    else if (strcmp(d->key, key) < 0) {
       d = d->right;
     }
     else {
@@ -76,6 +69,7 @@ int main() {
   SVdict dict = makeSVdict();
   addOrUpdate(dict, "ASS", (int*) 3);
   printf("\t%s\n", dict->key);
+  printf("THI: %d\n", strcmp("BASS", "ASS"));
   addOrUpdate(dict, "BASS", (int*) 4);
   printf("\t%s\n", dict->right->key);
   addOrUpdate(dict, "APPLE", (int*) 7);

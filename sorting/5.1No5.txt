@@ -1,0 +1,13 @@
+﻿		Find the order of growth  for solutions of the following recurrences
+a. T(n) = 4T(n/2) + n, T(1) = 1
+	a = 4, b = 2, d =1
+	log24 = 2 > d = 1
+	O(nlogbn)
+b. T(n) = 4T(n/2) + n2, T(1) = 1
+	a = 4, b = 2, d =2
+	log24 = 2 = d = 2
+	O(n2logn)
+c. T(n) = 4T(n/2) + n3, T(1) = 1
+	a = 4, b = 2, d =3
+	log24 = 2 < d = 3
+	O(n3)

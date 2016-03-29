@@ -26,15 +26,11 @@ void disposeSVdict(SVdict d) {
   free(d);
 }
 
-int hasKey(SVdict d, char* key) {
-  char* check;
-  
-  while (d != NULL && d->val != NULL) {
-    check = d->key;
-    
-    if (strcmp(check, key) == 0)
+int hasKey(SVdict d, char* key) {  
+  while (d != NULL && d->val != NULL) {    
+    if (strcmp(d->key, key) == 0)
       return 1;
-    else if (strcmp(check, key) < 0)
+    else if (strcmp(d->key, key) < 0)
       d = d->right;
     else
       d = d->left;
@@ -45,35 +41,39 @@ int hasKey(SVdict d, char* key) {
 int addOrUpdate(SVdict d, char* key, void* val) {  
   while (d != NULL && d->key != NULL) {    
     if (strcmp(d->key, key) == 0) {
+      printf("1");
       d->val = val;
       return 1;
     }
     else if (strcmp(d->key, key) < 0) {
-      d = d->right;
+      printf("Go right\n");
+      if (d->right == NULL) {
+	d->right = makeSVdict();
+	d->right->key = key;
+	d->right->val = val;
+
+	return 0;
+      }
+      else
+	d = d->right;
     }
     else {
-      d = d->left;
+      printf("Go left\n");
+      if (d->left == NULL) {
+	d->left = makeSVdict();
+	d->left->key = key;
+	d->left->val = val;
+	
+	return 0;
+      }
     }
   }
-  if (d == NULL) {
-    printf("Meesh\n");
-    d = makeSVdict();
-  }
-  d->key = key;
-  d->val = val;
-  
-  return 0;
 }
 
 int main() {
   SVdict dict = makeSVdict();
   addOrUpdate(dict, "ASS", (int*) 3);
-  printf("\t%s\n", dict->key);
-  printf("THI: %d\n", strcmp("BASS", "ASS"));
   addOrUpdate(dict, "BASS", (int*) 4);
-  printf("\t%s\n", dict->right->key);
+  assert((strcmp("BASS", dict->right->key) == 0));
   addOrUpdate(dict, "APPLE", (int*) 7);
-  printf("Has ASS: %d\nHas AND: %d\nHas BASS: %d\nHas APPLE: %d\n",
-	 hasKey(dict, "ASS"), hasKey(dict, "AND"),
-	 hasKey(dict, "BASS"), hasKey(dict, "APPLE"));
 }

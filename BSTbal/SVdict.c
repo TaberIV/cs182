@@ -26,6 +26,7 @@ void disposeSVdict(SVdict d) {
   if (d != NULL) {
     SVdict right = d->right;
     SVdict left = d->left;
+    free(d->key);
     free(d);
     disposeSVdict(right);
     disposeSVdict(left);
@@ -104,6 +105,6 @@ int main() {
   addOrUpdate(dict, "UGLY", (int*) 32);
 
   //printf("%d\n", lookup(dict, "UGLY"));
-
+  
   return 0;
 }

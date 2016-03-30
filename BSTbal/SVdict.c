@@ -103,8 +103,4 @@ int main() {
   addOrUpdate(dict, "BAD", (int*) 3);
   addOrUpdate(dict, "ASS", (int*) 7);
   addOrUpdate(dict, "UGLY", (int*) 32);
-
-  //printf("%d\n", lookup(dict, "UGLY"));
-  
-  return 0;
 }

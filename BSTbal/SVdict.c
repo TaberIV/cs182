@@ -23,7 +23,13 @@ SVdict makeSVdict() {
 }
 
 void disposeSVdict(SVdict d) {
-  free(d);
+  if (d != NULL) {
+    SVdict right = d->right;
+    SVdict left = d->left;
+    free(d);
+    disposeSVdict(right);
+    disposeSVdict(left);
+  }
 }
 
 int hasKey(SVdict d, char* key) {  
@@ -86,7 +92,8 @@ void* lookup(SVdict d, char* key) {
 }
 
 int remKey(SVdict d, char* key) {
-  
+
+  return 1;
 }
 
 int main() {
@@ -97,4 +104,6 @@ int main() {
   addOrUpdate(dict, "UGLY", (int*) 32);
 
   //printf("%d\n", lookup(dict, "UGLY"));
+
+  return 0;
 }

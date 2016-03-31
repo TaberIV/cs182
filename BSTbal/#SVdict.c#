@@ -54,6 +54,10 @@ int addOrUpdate(SVdict d, char* key, void* val) { //ADD BALANCING
     else if (strcmp(d->key, key) < 0) {
       if (d->right != NULL)
 	return addOrUpdate(d->right, key, val);
+      else {
+	
+	d->right = makeSIdict();
+      }
     }
     else {
       return addOrUpdate(d->left, key, val);

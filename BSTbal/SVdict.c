@@ -8,6 +8,7 @@
 struct sv_dict {
   char* key;
   void* val;
+  int bal;
   SVdict left;
   SVdict right;
 };
@@ -54,77 +55,128 @@ int addOrUpdate(SVdict d, char* key, void* val) { //ADD BALANCING
     else if (strcmp(d->key, key) < 0) {
       if (d->right != NULL)
 	return addOrUpdate(d->right, key, val);
+      else {
+	d->right = makeSVdict();
+	d->right->key = key;
+	d->right->val = val;
+	return 0;
+      }
     }
     else {
-      return addOrUpdate(d->left, key, val);
+      if (d->left != NULL)
+	return addOrUpdate(d->left, key, val);
+      else {
+	d->left = makeSVdict();
+	d->left->key = key;
+	d->left->val = val;
+	return 0;
+      }
     }
   }
   //If the key was NULL, we are dealing with an
   //empty tree, so we can work with the root directly
-  if (prev != NULL) {
-    if (strcmp(prev->key, key) < 0) {
-      prev->right = makeSVdict();
-      d = prev->right;
-    }
-    else {
-      prev->left = makeSVdict();
-      d = prev->left;
-    }
+  else {
+    d->key = key;
+    d->val = val;
+    d->bal = 0;
+    return 0;
   }
-  d->val = val;
-  d->key = (char*) malloc(sizeof(key));
-  strcpy(d->key, key);
-  
-  return 0;
 }
 
 void* lookup(SVdict d, char* key) {
-  while (d != NULL && d->val != NULL) {
+  if (d != NULL && d->val != NULL) {
     if (strcmp(d->key, key) == 0)
       return d->val;
     else if (strcmp(d->key, key) < 0)
-      d = d->right;
+      return lookup(d->right, key);
     else
-      d = d->left;
+      return lookup(d->left, key);
   }
-  return NULL;
+  else
+    return NULL;
+}
+
+int RemKey(SVdict d, char* key, SVdict parent) {
+  //Finds desired key-------------------------------
+  if (d != NULL && strcmp(d->key, key) != 0) {    
+    if (strcmp(d->key, key) < 0)
+      return RemKey(d->right, key, d);
+    else
+      return RemKey(d->left, key, d);
+  }
+  //------------------------------------------------
+
+  //If you get here your search has concluded, -----------
+  //this section of code only runs on the last recusion---
+  if (d == NULL) //key is not in the tree
+    return 0;
+  else { //d has key you are looking for
+    left = (strcmp(parent->key, key) > 0) ? 1 : 0;
+    
+    if (d->right == NULL) {
+      if (left == 1)
+	parent->left = d->left; //done
+      else
+	parent->right = d->left; //done
+    }
+    else if (d->left == NULL) {
+      if (left == 1)
+	parent->left = d->right;
+      else
+	parent->right = d->right;
+    }
+    else { 
+      //You poor fool, this thing you were trying to ---------
+      //remove has both left and right subtrees. Get ready. --
+      
+      //------------------------------------------------------
+    }
+  }
+  //------------------------------------------------------
 }
 
 int remKey(SVdict d, char* key) {
-  SVdict prev = NULL, root = d;
-
-  while (d != NULL && strcmp(d->key, key) != 0) {
-    prev = d;
-    
+  //Finds desired key-------------------------------
+  if (d != NULL && strcmp(d->key, key) != 0) {    
     if (strcmp(d->key, key) < 0)
-      d = d->right;
+      return RemKey(d->right, key, d);
     else
-      d = d->left;
+      return RemKey(d->left, key, d);
   }
+  //------------------------------------------------
 
-  if (d == NULL)
-    return 0;
-
-  SVdict temp;
-  if (d->left == NULL)
-    temp = d->right;
-  else if (d->right == NULL)
-    temp = d->left;
+  //This code is only accessed when the ************
+  //root is the key being looked for****************
+  if (d->right == NULL && d->left == NULL) {
+    d->key = NULL;
+    d->val = NULL;
+  }
+  else if (d->right == NULL) {
+    d->val = d->left->val;
+    d->key = d->left->key;
+    d->right = d->left->right;
+    d->left = d->left->left;
+  }
+  else if (d->left == NULL) {
+    d->val = d->right->val;
+    d->key = d->right->key;
+    d->right = d->right->left;
+    d->left = d->right->right;
+  }
   else {
+    SVdict temp;
     temp = d->right;
     while (temp->left != NULL)
       temp = temp->left;
-    remKey(root, key);
+    remKey(d, temp->key);
+
+    d->val = temp->val;
+    d->key = temp->key
   }
-
-  if (strcmp(prev->key, d->key) < 0)
-    prev->right = temp;
-  else
-    prev->left = temp;
+  //************************************************
   
-  return 1;
 }
-
+  
 void preorderK(SVdict t, int indent) {
   for (int i = 0; i < indent; i++)
     printf(" "); /* print a blank of indentation */
@@ -151,6 +203,9 @@ int main() {
   addOrUpdate(dict, "dASS", (int*) 7);
   addOrUpdate(dict, "fUGLY", (int*) 32);
   preorderKeys(dict);
-  char* key = "fUGLY";
+  remKey(dict, "BAD");
+  preorderKeys(dict);
+  char* key = "GOD";
   printf("\nHas %s: %d\n", key, hasKey(dict, key));
+  printf("Lookup %s: %d\n", key, lookup(dict, key));
 }

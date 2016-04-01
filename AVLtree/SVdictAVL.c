@@ -64,6 +64,10 @@ void rightRotation(SVdict d) {
   temp->left = temp->right;
   temp->right = d->right;
   d->right = temp;
+  //QUESTIONABLE!***************
+  d->bal = 0;
+  d->right->bal = 0;
+  //****************************
 }
 
 void leftRotation(SVdict d) {
@@ -84,6 +88,20 @@ void leftRotation(SVdict d) {
   temp->right = temp->left;
   temp->left = d->left;
   d->left = temp;
+  //QUESTIONABLE!***************
+  d->bal = 0;
+  d->left->bal = 0;
+  //****************************
+}
+
+void leftRightRotation(SVdict d) {
+  leftRotation(d->left);
+  rightRotation(d);
+}
+
+void rightLeftRotation(SVdict d) {
+  rightRotation(d->right);
+  leftRotation(d);
 }
 
 int addOrUpdate(SVdict d, char* key, void* val) { //ADD BALANCING
@@ -130,18 +148,16 @@ int addOrUpdate(SVdict d, char* key, void* val) { //ADD BALANCING
 	
 	if (abs(d->bal) > 1) {
 	  if (d->bal > 0) {
-	    rightRotation(d);
-	    //QUESTIONABLE!***************
-	    d->bal = 0;
-	    d->right->bal = 0;
-	    //****************************
+	    if (d->left->bal == 1)
+	      rightRotation(d);
+	    else
+	      leftRightRotation(d);
 	  }
 	  else if (d->bal < 0) {
-	    leftRotation(d);
-	    //QUESTIONABLE!***************
-	    d->bal = 0;
-	    d->left->bal = 0;
-	    //****************************
+	    if (d->right->bal == -1)
+	      leftRotation(d);
+	    else
+	      rightLeftRotation(d);
 	  }
 	}
       }

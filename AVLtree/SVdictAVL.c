@@ -46,31 +46,106 @@ int hasKey(SVdict d, char* key) {
   return 0;
 }
 
+void rightRotation(SVdict d) {
+  char* keyTemp;
+  void* valTemp;
+  SVdict temp;
+
+  //Swap------------------
+  keyTemp = d->key;
+  valTemp = d->val;
+  d->key = d->left->key;
+  d->val = d->left->val;
+  d->left->key = keyTemp;
+  d->left->val = valTemp;
+  //-----------------------
+  temp = d->left;
+  d->left = d->left->left;
+  temp->left = temp->right;
+  temp->right = d->right;
+  d->right = temp;
+}
+
+void leftRotation(SVdict d) {
+  char* keyTemp;
+  void* valTemp;
+  SVdict temp;
+
+  //Swap------------------
+  keyTemp = d->key;
+  valTemp = d->val;
+  d->key = d->right->key;
+  d->val = d->right->val;
+  d->right->key = keyTemp;
+  d->right->val = valTemp;
+  //-----------------------
+  temp = d->right;
+  d->right = d->right->right;
+  temp->right = temp->left;
+  temp->left = d->left;
+  d->left = temp;
+}
+
 int addOrUpdate(SVdict d, char* key, void* val) { //ADD BALANCING
   if (d->key != NULL) {
     if (strcmp(d->key, key) == 0) {
       d->val = val;
       return 1;
     }
-    else if (strcmp(d->key, key) < 0) {
-      if (d->right != NULL)
-	return addOrUpdate(d->right, key, val);
-      else {
-	d->right = makeSVdict();
-	d->right->key = key;
-	d->right->val = val;
-	return 0;
-      }
-    }
     else {
-      if (d->left != NULL)
-	return addOrUpdate(d->left, key, val);
-      else {
-	d->left = makeSVdict();
-	d->left->key = key;
-	d->left->val = val;
-	return 0;
+      int nextBal, returnVal, nextBal1, left = (strcmp(d->key, key) > 0) ? 1 : -1;
+      if (left != 1) { //IF to go right
+	if (d->right != NULL) {
+	  nextBal = d->right->bal;
+	  returnVal = addOrUpdate(d->right, key, val);
+	  nextBal1 = d->right->bal;
+	}
+	else {
+	  d->right = makeSVdict();
+	  d->right->key = key;
+	  d->right->val = val;
+	  
+	  d->bal -= 1;
+	  return 0;
+	}
       }
+      else { //Else to go left
+	if (d->left != NULL) { //Work with Balance *-*-*-*-*-*-*-
+	  nextBal = d->left->bal;
+	  returnVal = addOrUpdate(d->left, key, val);
+	  nextBal1 = d->left->bal;
+	}
+	else {
+	  d->left = makeSVdict();
+	  d->left->key = key;
+	  d->left->val = val;
+	  
+	  d->bal += 1;
+	  return 0;
+	}
+      }
+      
+      if (abs(nextBal1) > abs(nextBal)) {
+	d->bal += left;
+	
+	if (abs(d->bal) > 1) {
+	  if (d->bal > 0) {
+	    rightRotation(d);
+	    //QUESTIONABLE!***************
+	    d->bal = 0;
+	    d->right->bal = 0;
+	    //****************************
+	  }
+	  else if (d->bal < 0) {
+	    leftRotation(d);
+	    //QUESTIONABLE!***************
+	    d->bal = 0;
+	    d->left->bal = 0;
+	    //****************************
+	  }
+	}
+      }
+      return returnVal;
     }
   }
   //If the key was NULL, we are dealing with an
@@ -111,13 +186,13 @@ int RemKey(SVdict d, char* key, SVdict parent) {
   if (d == NULL) //key is not in the tree
     return 0;
   else { //d has key you are looking for
-    left = (strcmp(parent->key, key) > 0) ? 1 : 0;
+    int left = (strcmp(parent->key, key) > 0) ? 1 : 0;
     
     if (d->right == NULL) {
       if (left == 1)
-	parent->left = d->left; //done
+	parent->left = d->left;
       else
-	parent->right = d->left; //done
+	parent->right = d->left;
     }
     else if (d->left == NULL) {
       if (left == 1)
@@ -128,9 +203,21 @@ int RemKey(SVdict d, char* key, SVdict parent) {
     else { 
       //You poor fool, this thing you were trying to ---------
       //remove has both left and right subtrees. Get ready. --
-      
+      SVdict temp = d->right;
+      while (temp->left != NULL)
+	temp = temp->left;
+      remKey(d, temp->key);
+
+      temp->right = d->right;
+      temp->left = d->left;
+      if (left == 1)
+	parent->left = temp;
+      else
+	parent->right = temp;
+      free(d);
       //------------------------------------------------------
     }
+    return 1;
   }
   //------------------------------------------------------
 }
@@ -171,17 +258,17 @@ int remKey(SVdict d, char* key) {
     remKey(d, temp->key);
 
     d->val = temp->val;
-    d->key = temp->key
+    d->key = temp->key;
   }
   //************************************************
-  
+  return 1;
 }
   
 void preorderK(SVdict t, int indent) {
   for (int i = 0; i < indent; i++)
     printf(" "); /* print a blank of indentation */
   if (t != NULL) {
-    printf("%s\n", t->key);
+    printf("%s    \t%d\n", t->key, t->bal);
     preorderK(t->left, indent+1);
     preorderK(t->right, indent+1);
   } else 
@@ -193,19 +280,15 @@ void preorderKeys(SVdict d) {
 }
 
 int main() {
+  //Create and add to dict------------
   SVdict dict = makeSVdict();
-  addOrUpdate(dict, "GOOD", (int*) 1);
-  addOrUpdate(dict, "BAD", (int*) 3);
-  addOrUpdate(dict, "ASS", (int*) 7);
-  addOrUpdate(dict, "UGLY", (int*) 32);
-  addOrUpdate(dict, "GOD", (int*) 1);
-  addOrUpdate(dict, "BA", (int*) 3);
-  addOrUpdate(dict, "dASS", (int*) 7);
-  addOrUpdate(dict, "fUGLY", (int*) 32);
+  addOrUpdate(dict, "middle", (int*) 2);
+  addOrUpdate(dict, "beginning", (int*) 4);
+  addOrUpdate(dict, "ze finale", (int*) 1);
+  addOrUpdate(dict, "random", (int*) 1);
+  addOrUpdate(dict, "zebra", (int*) 1);
+  addOrUpdate(dict, "zss", (int*) 1);
+  //addOrUpdate(dict, "zeb", (int*) 1);
+  //----------------------------------
   preorderKeys(dict);
-  remKey(dict, "BAD");
-  preorderKeys(dict);
-  char* key = "GOD";
-  printf("\nHas %s: %d\n", key, hasKey(dict, key));
-  printf("Lookup %s: %d\n", key, lookup(dict, key));
 }

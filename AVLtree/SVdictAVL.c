@@ -1,3 +1,5 @@
+//I pledge my honor I have abided by the Stevens Honor System - Taber McFarlin
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
@@ -64,10 +66,6 @@ void rightRotation(SVdict d) {
   temp->left = temp->right;
   temp->right = d->right;
   d->right = temp;
-  //QUESTIONABLE!***************
-  d->bal = 0;
-  d->right->bal = 0;
-  //****************************
 }
 
 void leftRotation(SVdict d) {
@@ -88,10 +86,6 @@ void leftRotation(SVdict d) {
   temp->right = temp->left;
   temp->left = d->left;
   d->left = temp;
-  //QUESTIONABLE!***************
-  d->bal = 0;
-  d->left->bal = 0;
-  //****************************
 }
 
 void leftRightRotation(SVdict d) {
@@ -148,16 +142,30 @@ int addOrUpdate(SVdict d, char* key, void* val) { //ADD BALANCING
 	
 	if (abs(d->bal) > 1) {
 	  if (d->bal > 0) {
-	    if (d->left->bal == 1)
+	    if (d->left->bal == 1) {
 	      rightRotation(d);
-	    else
+	      d->bal = 0;
+	      d->right->bal = 0;
+	    }
+	    else {
 	      leftRightRotation(d);
+	      d->bal = 0;
+	      d->right->bal = 0;
+	      d->left->bal = 0;
+	    }
 	  }
 	  else if (d->bal < 0) {
-	    if (d->right->bal == -1)
+	    if (d->right->bal == -1) {
 	      leftRotation(d);
-	    else
+	      d->bal = 0;
+	      d->left->bal = 0;
+	    }
+	    else {
 	      rightLeftRotation(d);
+	      d->bal = 0;
+	      d->left->bal = 0;
+	      d->right->bal = 0;
+	    }
 	  }
 	}
       }
@@ -293,18 +301,4 @@ void preorderK(SVdict t, int indent) {
 
 void preorderKeys(SVdict d) {
   preorderK(d, 0);
-}
-
-int main() {
-  //Create and add to dict------------
-  SVdict dict = makeSVdict();
-  addOrUpdate(dict, "middle", (int*) 2);
-  addOrUpdate(dict, "beginning", (int*) 4);
-  addOrUpdate(dict, "ze finale", (int*) 1);
-  addOrUpdate(dict, "random", (int*) 1);
-  addOrUpdate(dict, "zebra", (int*) 1);
-  addOrUpdate(dict, "zss", (int*) 1);
-  //addOrUpdate(dict, "zeb", (int*) 1);
-  //----------------------------------
-  preorderKeys(dict);
 }

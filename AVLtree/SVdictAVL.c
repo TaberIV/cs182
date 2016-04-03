@@ -98,6 +98,41 @@ void rightLeftRotation(SVdict d) {
   leftRotation(d);
 }
 
+void balance(SVdict d, int nextBal, int nextBal1, int left) {
+  if (abs(nextBal1) > abs(nextBal)) {
+    d->bal += left;
+    
+    if (abs(d->bal) > 1) {
+      if (d->bal > 0) {
+	if (d->left->bal == 1) {
+	  rightRotation(d);
+	  d->bal = 0;
+	  d->right->bal = 0;
+	}
+	else {
+	  leftRightRotation(d);
+	  d->bal = 0;
+	  d->right->bal = 0;
+	  d->left->bal = 0;
+	}
+      }
+      else if (d->bal < 0) {
+	if (d->right->bal == -1) {
+	  leftRotation(d);
+	  d->bal = 0;
+	  d->left->bal = 0;
+	}
+	else {
+	  rightLeftRotation(d);
+	  d->bal = 0;
+	  d->left->bal = 0;
+	  d->right->bal = 0;
+	}
+      }
+    }
+  }
+}
+
 int addOrUpdate(SVdict d, char* key, void* val) { //ADD BALANCING
   if (d->key != NULL) {
     if (strcmp(d->key, key) == 0) {
@@ -136,39 +171,9 @@ int addOrUpdate(SVdict d, char* key, void* val) { //ADD BALANCING
 	  return 0;
 	}
       }
+
+      balance(d, nextBal, nextBal1, left);
       
-      if (abs(nextBal1) > abs(nextBal)) {
-	d->bal += left;
-	
-	if (abs(d->bal) > 1) {
-	  if (d->bal > 0) {
-	    if (d->left->bal == 1) {
-	      rightRotation(d);
-	      d->bal = 0;
-	      d->right->bal = 0;
-	    }
-	    else {
-	      leftRightRotation(d);
-	      d->bal = 0;
-	      d->right->bal = 0;
-	      d->left->bal = 0;
-	    }
-	  }
-	  else if (d->bal < 0) {
-	    if (d->right->bal == -1) {
-	      leftRotation(d);
-	      d->bal = 0;
-	      d->left->bal = 0;
-	    }
-	    else {
-	      rightLeftRotation(d);
-	      d->bal = 0;
-	      d->left->bal = 0;
-	      d->right->bal = 0;
-	    }
-	  }
-	}
-      }
       return returnVal;
     }
   }

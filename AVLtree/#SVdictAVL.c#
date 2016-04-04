@@ -151,6 +151,7 @@ int addOrUpdate(SVdict d, char* key, void* val) { //ADD BALANCING
 	else {
 	  d->right = makeSVdict();
 	  d->right->key = malloc(strlen(key) + 1);
+	  d->right-
 	  strcpy(d->right->key, key);
 	  d->right->val = val;
 	  

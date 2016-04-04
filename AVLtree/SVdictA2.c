@@ -240,34 +240,6 @@ int RemKey(SVdict d, char* key, SVdict parent) {
     }
     
     //balance(d, nextBal, nextBal1, -left);
-    if (abs(d->bal) > 1) {
-      if (d->bal > 0) {
-	if (d->left->bal == 1) {
-	  rightRotation(d);
-	  d->bal = 0;
-	  d->right->bal = 0;
-	}
-	else {
-	  leftRightRotation(d);
-	  d->bal = 0;
-	  d->right->bal = 0;
-	  d->left->bal = 0;
-	}
-      }
-      else if (d->bal < 0) {
-	if (d->right->bal == -1) {
-	  leftRotation(d);
-	  d->bal = 0;
-	  d->left->bal = 0;
-	}
-	else {
-	  rightLeftRotation(d);
-	  d->bal = 0;
-	  d->left->bal = 0;
-	  d->right->bal = 0;
-	}
-      }
-    }
     return returnVal;
   }
   //------------------------------------------------
@@ -278,13 +250,12 @@ int RemKey(SVdict d, char* key, SVdict parent) {
     return 0;
   else { //d has key you are looking for
     int left = (strcmp(parent->key, key) > 0) ? 1 : 0;
-    SVdict temp = d;
+    
     if (d->right == NULL) {
       if (left == 1)
 	parent->left = d->left;
       else
 	parent->right = d->left;
-
     }
     else if (d->left == NULL) {
       if (left == 1)
@@ -292,23 +263,18 @@ int RemKey(SVdict d, char* key, SVdict parent) {
       else
 	parent->right = d->right;
     }
-    else { 
+    else {
       //You poor fool, this thing you were trying to ---------
       //remove has both left and right subtrees. Get ready. --
-      temp = d->right;
+      SVdict temp = d->right;
       while (temp->left != NULL)
 	temp = temp->left;
-      SVdict this = makeSVdict();
-      this->key = malloc(strlen(temp->key)+1);
-      strcpy(this->key, temp->key);
-      this->val = temp->val;
-      remKey(d, this->key);
-      this->left = d->left;
-      this->right = d->right;
-      if (left == 1)
-	parent->left = this;
-      else
-	parent->right = this;
+      int tempVal = temp->val;
+      char* tempKey = malloc(strlen(temp->key) + 1);
+      remKey(d, temp->key);
+
+      d->val = tempVal;
+      d->key = tempKey;
       //------------------------------------------------------
     }
     free(d->key);
@@ -355,34 +321,6 @@ int remKey(SVdict d, char* key) {
     }
 
     //balance(d, nextBal, nextBal1, -1*left);
-    if (abs(d->bal) > 1) {
-      if (d->bal > 0) {
-	if (d->left->bal == 1) {
-	  rightRotation(d);
-	  d->bal = 0;
-	  d->right->bal = 0;
-	}
-	else {
-	  leftRightRotation(d);
-	  d->bal = 0;
-	  d->right->bal = 0;
-	  d->left->bal = 0;
-	}
-      }
-      else if (d->bal < 0) {
-	if (d->right->bal == -1) {
-	  leftRotation(d);
-	  d->bal = 0;
-	  d->left->bal = 0;
-	}
-	else {
-	  rightLeftRotation(d);
-	  d->bal = 0;
-	  d->left->bal = 0;
-	  d->right->bal = 0;
-	}
-      }
-    }
     return returnVal;
   }
   //------------------------------------------------
@@ -410,42 +348,12 @@ int remKey(SVdict d, char* key) {
     temp = d->right;
     while (temp->left != NULL)
       temp = temp->left;
+    remKey(d, temp->key);
+
     d->val = temp->val;
-    d->key = malloc(strlen(temp->key) + 1);
-    strcpy(d->key, temp->key);
-    RemKey(d->right, d->key, d);
+    d->key = temp->key;
   }
   //************************************************
-
-  //balance(d, nextBal, nextBal1, -1*left);
-  if (abs(d->bal) > 1) {
-    if (d->bal > 0) {
-      if (d->left->bal == 1) {
-	rightRotation(d);
-	d->bal = 0;
-	d->right->bal = 0;
-      }
-      else {
-	leftRightRotation(d);
-	d->bal = 0;
-	d->right->bal = 0;
-	d->left->bal = 0;
-      }
-    }
-    else if (d->bal < 0) {
-      if (d->right->bal == -1) {
-	leftRotation(d);
-	d->bal = 0;
-	d->left->bal = 0;
-      }
-      else {
-	rightLeftRotation(d);
-	d->bal = 0;
-	d->left->bal = 0;
-	d->right->bal = 0;
-      }
-    }
-  }
   return 1;
 }
   
@@ -494,8 +402,6 @@ int main() {
   addOrUpdate(d, "Y", (int *) 1);
   addOrUpdate(d, "Z", (int *) 1);
   remKey(d, "T");
-  remKey(d, "Y");
-  remKey(d, "L");
   preorderKeys(d);
   disposeSVdict(d);
 }

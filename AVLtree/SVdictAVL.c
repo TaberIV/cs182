@@ -1,4 +1,3 @@
-
 //I pledge my honor I have abided by the Stevens Honor System - Taber McFarlin
 
 #include <stdlib.h>
@@ -207,11 +206,69 @@ void* lookup(SVdict d, char* key) {
 
 int RemKey(SVdict d, char* key, SVdict parent) {
   //Finds desired key-------------------------------
-  if (d != NULL && strcmp(d->key, key) != 0) {    
-    if (strcmp(d->key, key) < 0)
-      return RemKey(d->right, key, d);
-    else
-      return RemKey(d->left, key, d);
+  if (d != NULL && strcmp(d->key, key) != 0) {
+    int nextBal, nextBal1, left = (strcmp(d->key, key) < 0) ? -1 : 1, returnVal;
+    if (left != 1) {
+      if (d->right == NULL)
+	nextBal = 10;
+      else
+	nextBal = d->right->bal;
+      
+      returnVal = RemKey(d->right, key, d);
+      
+      if (d->right == NULL)
+	nextBal1 = 10;
+      else
+	nextBal1 = d->right->bal;
+      if (nextBal != nextBal1 && (nextBal1 == 10 || abs(nextBal - nextBal1) > 0))
+	d->bal += 1;
+    }
+    else {
+      if (d->left == NULL)
+	nextBal = 10;
+      else
+	nextBal = d->left->bal;
+      
+      returnVal = RemKey(d->left, key, d);
+
+      if (d->left == NULL)
+	nextBal1 = 10;
+      else
+	nextBal1 = d->left->bal;
+      if (nextBal != nextBal1 && (nextBal1 == 10 || abs(nextBal - nextBal1) > 0))
+	d->bal -= 1;
+    }
+    
+    //balance(d, nextBal, nextBal1, -left);
+    if (abs(d->bal) > 1) {
+      if (d->bal > 0) {
+	if (d->left->bal == 1) {
+	  rightRotation(d);
+	  d->bal = 0;
+	  d->right->bal = 0;
+	}
+	else {
+	  leftRightRotation(d);
+	  d->bal = 0;
+	  d->right->bal = 0;
+	  d->left->bal = 0;
+	}
+      }
+      else if (d->bal < 0) {
+	if (d->right->bal == -1) {
+	  leftRotation(d);
+	  d->bal = 0;
+	  d->left->bal = 0;
+	}
+	else {
+	  rightLeftRotation(d);
+	  d->bal = 0;
+	  d->left->bal = 0;
+	  d->right->bal = 0;
+	}
+      }
+    }
+    return returnVal;
   }
   //------------------------------------------------
 
@@ -221,7 +278,7 @@ int RemKey(SVdict d, char* key, SVdict parent) {
     return 0;
   else { //d has key you are looking for
     int left = (strcmp(parent->key, key) > 0) ? 1 : 0;
-    
+    SVdict temp = d;
     if (d->right == NULL) {
       if (left == 1)
 	parent->left = d->left;
@@ -237,7 +294,7 @@ int RemKey(SVdict d, char* key, SVdict parent) {
     else { 
       //You poor fool, this thing you were trying to ---------
       //remove has both left and right subtrees. Get ready. --
-      SVdict temp = d->right;
+      temp = d->right;
       while (temp->left != NULL)
 	temp = temp->left;
       remKey(d, temp->key);
@@ -260,11 +317,41 @@ int RemKey(SVdict d, char* key, SVdict parent) {
 
 int remKey(SVdict d, char* key) {
   //Finds desired key-------------------------------
-  if (d != NULL && strcmp(d->key, key) != 0) {    
-    if (strcmp(d->key, key) < 0)
-      return RemKey(d->right, key, d);
-    else
-      return RemKey(d->left, key, d);
+  if (d != NULL && strcmp(d->key, key) != 0) {
+    int nextBal, nextBal1, left = (strcmp(d->key, key) < 0) ? -1 : 1, returnVal;
+    if (left != 1) {
+      if (d->right == NULL)
+	nextBal = 10;
+      else
+	nextBal = d->right->bal;
+      
+      returnVal = RemKey(d->right, key, d);
+      
+      if (d->right == NULL)
+	nextBal1 = 10;
+      else
+	nextBal1 = d->right->bal;
+      if (nextBal != nextBal1 && (nextBal1 == 10 || abs(nextBal - nextBal1) > 0))
+	d->bal += 1;
+    }
+    else {
+      if (d->left == NULL)
+	nextBal = 10;
+      else
+	nextBal = d->left->bal;
+      
+      returnVal = RemKey(d->left, key, d);
+
+      if (d->left == NULL)
+	nextBal1 = 10;
+      else
+	nextBal1 = d->left->bal;
+      if (nextBal != nextBal1 && (nextBal1 == 10 || abs(nextBal - nextBal1) > 0))
+	d->bal -= 1;
+    }
+
+    //balance(d, nextBal, nextBal1, -1*left);
+    return returnVal;
   }
   //------------------------------------------------
 
@@ -297,6 +384,7 @@ int remKey(SVdict d, char* key) {
     d->key = temp->key;
   }
   //************************************************
+
   return 1;
 }
   
@@ -344,7 +432,7 @@ int main() {
   addOrUpdate(d, "X", (int *) 1);
   addOrUpdate(d, "Y", (int *) 1);
   addOrUpdate(d, "Z", (int *) 1);
-  remKey(d, "Z");
+  remKey(d, "R");
   preorderKeys(d);
   disposeSVdict(d);
 }

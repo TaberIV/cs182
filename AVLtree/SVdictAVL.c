@@ -1,3 +1,4 @@
+
 //I pledge my honor I have abided by the Stevens Honor System - Taber McFarlin
 
 #include <stdlib.h>
@@ -21,6 +22,7 @@ SVdict makeSVdict() {
   d->val = NULL;
   d->left = NULL;
   d->right = NULL;
+  d->bal = 0;
   
   return d;
 }
@@ -132,7 +134,7 @@ void balance(SVdict d, int nextBal, int nextBal1, int left) {
     }
   }
 }
-
+  
 int addOrUpdate(SVdict d, char* key, void* val) { //ADD BALANCING
   if (d->key != NULL) {
     if (strcmp(d->key, key) == 0) {
@@ -149,7 +151,8 @@ int addOrUpdate(SVdict d, char* key, void* val) { //ADD BALANCING
 	}
 	else {
 	  d->right = makeSVdict();
-	  d->right->key = key;
+	  d->right->key = malloc(strlen(key) + 1);
+	  strcpy(d->right->key, key);
 	  d->right->val = val;
 	  
 	  d->bal -= 1;
@@ -157,14 +160,15 @@ int addOrUpdate(SVdict d, char* key, void* val) { //ADD BALANCING
 	}
       }
       else { //Else to go left
-	if (d->left != NULL) { //Work with Balance *-*-*-*-*-*-*-
+	if (d->left != NULL) { 
 	  nextBal = d->left->bal;
 	  returnVal = addOrUpdate(d->left, key, val);
 	  nextBal1 = d->left->bal;
 	}
 	else {
 	  d->left = makeSVdict();
-	  d->left->key = key;
+	  d->left->key = malloc(strlen(key));
+	  strcpy(d->left->key, key);
 	  d->left->val = val;
 	  
 	  d->bal += 1;
@@ -180,7 +184,8 @@ int addOrUpdate(SVdict d, char* key, void* val) { //ADD BALANCING
   //If the key was NULL, we are dealing with an
   //empty tree, so we can work with the root directly
   else {
-    d->key = key;
+    d->key = malloc(strlen(key) + 1);
+    strcpy(d->key, key);
     d->val = val;
     d->bal = 0;
     return 0;
@@ -243,9 +248,11 @@ int RemKey(SVdict d, char* key, SVdict parent) {
 	parent->left = temp;
       else
 	parent->right = temp;
-      free(d);
       //------------------------------------------------------
     }
+    free(d->key);
+    free(d);
+    
     return 1;
   }
   //------------------------------------------------------
@@ -297,13 +304,47 @@ void preorderK(SVdict t, int indent) {
   for (int i = 0; i < indent; i++)
     printf(" "); /* print a blank of indentation */
   if (t != NULL) {
-    printf("%s    \t%d\n", t->key, t->bal);
+    printf("%s       \t%d\n", t->key, t->bal);
     preorderK(t->left, indent+1);
     preorderK(t->right, indent+1);
-  } else 
+  }
+  else 
     printf("*\n");
 }
 
 void preorderKeys(SVdict d) {
   preorderK(d, 0);
+}
+
+int main() {
+  SVdict d = makeSVdict();
+  addOrUpdate(d, "A", (int *) 1);
+  addOrUpdate(d, "B", (int *) 1);
+  addOrUpdate(d, "C", (int *) 1);
+  addOrUpdate(d, "D", (int *) 1);
+  addOrUpdate(d, "E", (int *) 1);
+  addOrUpdate(d, "F", (int *) 1);
+  addOrUpdate(d, "G", (int *) 1);
+  addOrUpdate(d, "H", (int *) 1);
+  addOrUpdate(d, "I", (int *) 1);
+  addOrUpdate(d, "J", (int *) 1);
+  addOrUpdate(d, "K", (int *) 1);
+  addOrUpdate(d, "L", (int *) 1);
+  addOrUpdate(d, "M", (int *) 1);
+  addOrUpdate(d, "N", (int *) 1);
+  addOrUpdate(d, "O", (int *) 1);
+  addOrUpdate(d, "P", (int *) 1);
+  addOrUpdate(d, "Q", (int *) 1);
+  addOrUpdate(d, "R", (int *) 1);
+  addOrUpdate(d, "S", (int *) 1);
+  addOrUpdate(d, "T", (int *) 1);
+  addOrUpdate(d, "U", (int *) 1);
+  addOrUpdate(d, "V", (int *) 1);
+  addOrUpdate(d, "W", (int *) 1);
+  addOrUpdate(d, "X", (int *) 1);
+  addOrUpdate(d, "Y", (int *) 1);
+  addOrUpdate(d, "Z", (int *) 1);
+  remKey(d, "Z");
+  preorderKeys(d);
+  disposeSVdict(d);
 }

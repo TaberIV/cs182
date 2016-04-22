@@ -15,6 +15,7 @@ void printQueue(MinPrio qp) {
       printf(" ");
     printf("%d %s %d\n", i/2, qp->arr[i]->content, i);
   }
+  printf("\n");
 }
 
 int main() {
@@ -25,12 +26,26 @@ int main() {
   enqueue(q, "HARD");
   enqueue(q, "FUN");
   enqueue(q, "ALEX");
-  enqueue(q, "TABER");
+  Handle me = enqueue(q, "TABER");
   enqueue(q, "KRISTEN");
   enqueue(q, "BRENDAN");
   enqueue(q, "BEN");
   enqueue(q, "GAVIN");
-  enqueue(q, "NAUMANN");
+  Handle n = enqueue(q, "NAUMANN");
   printQueue(q);
+
+  /* Test for decreasedKey
+  n->content = "DAVE";
+  decreasedKey(q, n);
+  printQueue(q);*/
+  
+  /* Tests for dequeue
+  int n = 12;
+  for(int i = 0; i < n; i++) {
+    printf("\nAfter %d dequeue(s):\n", i + 1);
+    dequeueMin(q);
+    printQueue(q);
+    }*/
+  
   return 0;
 }

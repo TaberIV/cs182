@@ -1,6 +1,3 @@
-#ifndef	GRAPH_H
-#define	GRAPH_H	
-
 /* Simple interface for weighted directed graphs.
 
    The vertices are numbered 0 .. n-1 for some fixed n.
@@ -15,7 +12,6 @@
 
 */
 
-
 #define MATRIX 0
 #define LIST 1
 
@@ -25,7 +21,25 @@
 #ifndef _Graph
 #define _Graph
 
-struct graph;
+struct eNode {
+    float wt;
+    int target; 
+    struct eNode* next; 
+};
+typedef struct eNode* ENode;
+
+
+/* The graph; see graph.h for type Graph. 
+   Depending on the repType field, one of the fields adjM or aLists is not used.
+   (We could use a union for this, but it's not worth the trouble.)
+   Invariant: each adjacency list begins with a dummy node.
+*/
+struct graph {
+    short repType; /* MATRIX or LIST representation */
+    int numVerts;
+    float* adjM; /* the adjacency matrix, size numVerts*numVerts */
+    ENode* aList; /* array of adjacency lists; length numVerts */
+};
 typedef struct graph* Graph;
 
 #endif
@@ -83,5 +97,3 @@ int* successors(Graph G, int source);
 */
 int* predecessors(Graph G, int target);
 
-
-#endif

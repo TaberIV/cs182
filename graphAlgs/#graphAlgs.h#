@@ -16,7 +16,11 @@ Graph transClose(Graph g);
 
 
 /* Assume g is a symmetric graph, so it can be 
- * considered as an undirected graph.
+ * considered as an undirected graph.  
+ * (In particular, the weight u->v must equal weight v->u
+ * for every u,v.)
+ * Assume the weights are not INFINITY.
+ *
  * Construct a minimum spanning tree, as a new graph.
  * (So it will have the same number of vertices, 
  * but only some of the edges.)

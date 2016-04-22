@@ -35,7 +35,7 @@ Graph minSpanTree(Graph g) {
   for (int v = 1; v < g->numVerts; v++) {
     enqueue(V, INFINITY);
   }
-  
+
   
   return edges;
 }

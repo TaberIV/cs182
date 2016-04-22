@@ -20,7 +20,7 @@ MinPrio makeQueue(Comparator comp, int maxsize) {
   return qp;
 }
 
-void disposeQueue(MinPrio qp) { //NOT DONE
+void disposeQueue(MinPrio qp) {
   while (nonempty(qp) == 1)
     free(dequeueMin(qp));
   free(qp->arr);

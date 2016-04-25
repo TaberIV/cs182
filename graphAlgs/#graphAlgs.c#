@@ -68,7 +68,7 @@ Graph minSpanTree(Graph g) {
 	  edge(g, v->num, succ[i]) < hands[succ]->d) {
 	hands[succ[i]]->parent = v->num;
 	hands[succ[i]]->d = edge(g, v->num, succ[i]);
-	decreasedKey(Q, (int*) succ[i]);
+	decreasedKey(Q,  succ[i]);
       }
     }
   }

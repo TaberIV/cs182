@@ -2,7 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "minprio.h"
+#include "minprio.c"
 #include "graph.h"
+#include "graph.c"
+#include "graphAlgs.h"
 #include "graphAlgs.c"
 #include "graphio.c"
 
@@ -33,11 +37,26 @@ void testTransClose(char *path)
 
 }
 
+void testMinSpanTree(char* path) {
+   printf("Testing %s \n", path);
+   GraphInfo gi = readGraph(path, MATRIX);
+   
+   GraphInfo gi2 = (GraphInfo)malloc(sizeof(struct graphinfo));
+   gi2->vertnames = gi->vertnames;
+   gi2->graph = minSpanTree(gi->graph);
+
+   printf("\nMinSpanTree for %s:\n", path);
+   writeGraph(gi2);
+   disposeGraph(gi->graph);
+   disposeGraph(gi2->graph);
+}
+
 int main(int argc, char *argv[])
 {
+  testMinSpanTree("graph1.txt");
   //testTransClose("graph1.txt");
-    testTransClose("prereqs.txt");
-    //testTransClose("statesContig.txt");
-
-    return 0;
+  //testTransClose("prereqs.txt");
+  //testTransClose("statesContig.txt");
+  
+  return 0;
 }

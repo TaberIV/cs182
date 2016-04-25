@@ -2,13 +2,8 @@
 #include <stdio.h>
 #include <assert.h>
 #include <math.h>
-#include "minprio.c"
 #include "graphAlgs.h"
-
-//-----------------------
-#include "graph.c"
-//----------------------
-
+#include "minprio.h"
 
 struct vert {
   int num;
@@ -51,30 +46,33 @@ Graph minSpanTree(Graph g) {
   Handle hands[g->numVerts];
 
   Vert v;
-  for (int i = 0; i < g->numVerts; i++) {
+  v = makeVert(0, -1, 0);
+  hands[0] = enqueue(Q, v);
+  for (int i = 1; i < g->numVerts; i++) {
     v = makeVert(i, -1, INFINITY);
     hands[i] = enqueue(Q, v);
   }
-  free(hands[0]);
-  hands[0]->content = makeVert(0, 0, 0);
-  decreasedKey(Q, hands[0]);
 
   while(nonempty(Q)) {
     v = dequeueMin(Q);
 
     int* succ = successors(g, v->num);
+    Vert u;
     for (int i = 0; succ[i] != -1; i++) {
-      if (hands[succ[i]]->parent == -1 &&
-	  edge(g, v->num, succ[i]) < hands[succ]->d) {
-	hands[succ[i]]->parent = v->num;
-	hands[succ[i]]->d = edge(g, v->num, succ[i]);
-	decreasedKey(Q, (int*) succ[i]);
+      u = hands[succ[i]]->content;
+      if (u->parent == -1 &&
+	  edge(g, v->num, succ[i]) < u->d) {
+	u->parent = v->num;
+        u->d = edge(g, v->num, succ[i]);
+	decreasedKey(Q, hands[succ[i]]);
       }
     }
   }
   
-  for (int i = 1; i < g->numVerts; i++)
-    addEdge(edges, hands[i]->parent, i);
+  for (int i = 1; i < g->numVerts; i++) {
+    v = hands[i]->content;
+    addEdge(edges, v->parent, i, v->d);
+  }
   
   return edges;
 }

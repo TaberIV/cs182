@@ -19,6 +19,10 @@ where S and T are vertex names, for an edge S->T, and W is a decimal weight.
 If omitted, the weight is interpreted as DEFAULT_WEIGHT.
 ******************************************************************/
 
+/* change history:
+ * DN 4/18/2016 writeGraph write weights */
+
+
 #define DEFAULT_WEIGHT 1.0 
 
 #define MAX_NAMELEN 32 /* max length of a vertex name */
@@ -40,25 +44,25 @@ int vertexNum(GraphInfo gi, char* name);
 
 
 /* Read a graph from a text file, assuming format described above. 
-   Assumes filepath is a null-terminated string that is valid file path.
-   Assumes the file has the format specified above.
-*/
+ * Assumes filepath is a null-terminated string that is valid file path.
+ * Assumes the file has the format specified above.
+ */
 GraphInfo readGraph(char* filepath, int repType);
 
 
 /* Same as readGraph, but make a symmetric graph by also adding T->S
-   in addition to S->T, for a line with S T, unless there was already
-   an edge T->S from a preceding line of the file.
-*/
+ * in addition to S->T, for a line with S T, unless there was already
+ * an edge T->S from a preceding line of the file.
+ */
 GraphInfo readGraphMakeSymm(char* filepath, int repType);
 
 
-
 /* Prints the graph to stdout, in the file format.
-   Assumes gi points to a valid object. 
-   It prints each vertex's successors, with a space between groups,
-   for readability.
-*/
+ * Assumes gi points to a valid object. 
+ * It prints each vertex's successors, with a space between groups,
+ * for readability.  
+ * Prints weights even if they are the default weight.
+ */
 void writeGraph(GraphInfo gi);
 
 

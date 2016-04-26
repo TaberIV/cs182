@@ -24,4 +24,5 @@ int dubcmp(double a, double b) {
 
 int main() {
   MinPrio Q = makeQueue((Comparator) dubcmp, 100);
+  Handle* handles
 }

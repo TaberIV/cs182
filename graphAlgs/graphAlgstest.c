@@ -7,8 +7,6 @@
 #include "graphio.c"
 #include "graphAlgs.h"
 #include "graphAlgs.c"
-#include "minprio.c"
-
 /* Tests for Prim's MST algorithm.
  * Note: directly reads and writes the graph field of GraphInfo objects,
  * in order to print the spanning tree.
@@ -39,19 +37,19 @@ void testMST(char* path) {
 }
 
 int main() {
-
-    printf("graphAlgtest: TESTING PRIM\n");
-
-    //testMST("triangleMST.txt"); // a simple graph
-
-    testMST("LevitinPrim.txt"); // the graph example in Levitin book 
-
-    //testMST("sixMST.txt"); // slightly larger graph
-
-    /* Here's a bigger graph.  It's connected, because Alaska and Hawaii 
-     * are not included.  Unlike the previous examples, this one does
-     * NOT have a unique MST. */
-    //testMST("states49Contig.txt"); // bigger graph, uniform weights
-
+  printf("%f\n", INFINITY - 2.0);
+  printf("graphAlgtest: TESTING PRIM\n");
+  
+  //testMST("triangleMST.txt"); // a simple graph
+  
+  testMST("LevitinPrim.txt"); // the graph example in Levitin book 
+  
+  //testMST("sixMST.txt"); // slightly larger graph
+  
+  /* Here's a bigger graph.  It's connected, because Alaska and Hawaii 
+   * are not included.  Unlike the previous examples, this one does
+   * NOT have a unique MST. */
+  //testMST("states49Contig.txt"); // bigger graph, uniform weights
+  
 }
 

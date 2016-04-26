@@ -24,4 +24,13 @@ int dubcmp(double a, double b) {
 
 int main() {
   MinPrio Q = makeQueue((Comparator) dubcmp, 100);
+  Handle* hands = malloc(100 * sizeof(struct hands));
+  enqueue(Q, 100);
+  enqueue(Q, 1222222);
+  enqueue(Q, 1222);
+  enqueue(Q, 6);
+  enqueue(Q, 12222);
+  enqueue(Q, 1222222);
+  
+  printQueue(Q);
 }

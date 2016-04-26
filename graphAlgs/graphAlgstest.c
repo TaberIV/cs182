@@ -40,9 +40,9 @@ int main() {
   printf("%f\n", INFINITY - 2.0);
   printf("graphAlgtest: TESTING PRIM\n");
   
-  //testMST("triangleMST.txt"); // a simple graph
+  testMST("triangleMST.txt"); // a simple graph
   
-  testMST("LevitinPrim.txt"); // the graph example in Levitin book 
+  //testMST("LevitinPrim.txt"); // the graph example in Levitin book 
   
   //testMST("sixMST.txt"); // slightly larger graph
   
@@ -52,4 +52,3 @@ int main() {
   //testMST("states49Contig.txt"); // bigger graph, uniform weights
   
 }
-

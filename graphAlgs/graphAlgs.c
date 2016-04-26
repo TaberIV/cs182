@@ -22,8 +22,13 @@ Vert makeVert(int num, int parent, double d) {
   return v;
 }
 
-double compVert(Vert v, Vert u) {
-  return v->d - u->d;
+int compVert(Vert v, Vert u) {
+  if (v < u)
+    return 1;
+  else if (v > u)
+    return -1;
+  else
+    return 0;
 }
 
 
@@ -66,14 +71,12 @@ Graph minSpanTree(Graph g) {
   v = makeVert(0, -1, 0);
   hands[0] = enqueue(Q, v);
   for (int i = 1; i < g->numVerts; i++) {
-    v = makeVert(i, -1, 100);
+    v = makeVert(i, -1, INFINITY);
     hands[i] = enqueue(Q, v);
   }
 
   while(nonempty(Q)) {
-    printQueue(Q);
     v = dequeueMin(Q);
-    decreasedKey(Q, hands[1]);
     printf("v: %d\tpar: %d\twt: %f\n", v->num, v->parent, v->d);
     int* succ = successors(g, v->num);
     Vert u;

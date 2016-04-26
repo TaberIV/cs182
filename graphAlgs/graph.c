@@ -211,7 +211,3 @@ int* predecessors(Graph g, int target) {
     result[npred] = -1;        
     return result;
 }
-
-
-
-

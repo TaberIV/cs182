@@ -1,0 +1,9 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include <math.h>
+#include "graph.h"
+#include "graph.c"
+#include "minprio.h"
+#include "minprio.c"
+#include "graphio.h"

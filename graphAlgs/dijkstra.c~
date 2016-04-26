@@ -1,7 +1,26 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include "graph.h"
+#include "minprio.h"
 #include "graphio.h"
+
+struct vert {
+  int num;
+  int parent;
+  int inQueue;
+  double d;
+};
+typedef struct vert* Vert;
+
+int compVert(Vert v, Vert u) {
+  if (v->d < u->d)
+    return 1;
+  else if (v->d > u->d)
+    return -1;
+  else
+    return 0;
+}
 
 /* Print the lengths and predecessor in a shortest path from s,
  * for each vertex that is reachable from s.  (For vertices that  
@@ -21,4 +40,7 @@
  *   to E is 7.000000 via A
  *   to F is 15.000000 via C
  */
-void shortestPaths(GraphInfo GI, int s);
+void shortestPaths(GraphInfo GI, int s) {
+  Vert v;
+  MinPrio Q = makeQueue(
+}

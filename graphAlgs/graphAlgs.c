@@ -31,7 +31,6 @@ int compVert(Vert v, Vert u) {
     return 0;
 }
 
-
 void printQueue(MinPrio qp) {
   int level = -1;
   for (int i = 1; i <= qp->numElts; i++) {

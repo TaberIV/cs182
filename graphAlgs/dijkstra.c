@@ -27,9 +27,9 @@ Vert makeVert(int num, int parent, double d) {
 
 int compVert(Vert v, Vert u) {
   if (v->d < u->d)
-    return 1;
-  else if (v->d > u->d)
     return -1;
+  else if (v->d > u->d)
+    return 1;
   else
     return 0;
 }
@@ -57,8 +57,7 @@ void shortestPaths(GraphInfo GI, int s) {
   int n = GI->graph->numVerts;
   MinPrio Q = makeQueue((Comparator) compVert, n);
   Handle hands[n];
-  Handle hand;
-  Vert* V;
+  Vert V[n];
   int* succ;
 
   for (int i = 0; i < n; i++) {
@@ -69,8 +68,7 @@ void shortestPaths(GraphInfo GI, int s) {
   decreasedKey(Q, hands[s]);
 
   for (int i = 0; i < n; i++) {
-    hand = dequeueMin(Q);
-    v = hand->content;
+    v = dequeueMin(Q);
     v->dequeued = 1;
     succ = successors(GI->graph, v->num);
     for (int j = 0; succ[j] != -1; j++)
@@ -80,12 +78,11 @@ void shortestPaths(GraphInfo GI, int s) {
 	V[succ[j]]->parent = v->num;
 	decreasedKey(Q, hands[succ[j]]);
       }
-    
+  }
     //Output: ------------------------------
     printf("Shortest paths from vertex A\n");
     for (int i = 0; i < n; i++)
       if (i != s)
 	printf("  to %s is %f via %s\n",
 	       GI->vertnames[i], V[i]->d, GI->vertnames[V[i]->parent]);
-  }
 }

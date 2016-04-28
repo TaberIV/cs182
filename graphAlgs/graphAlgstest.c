@@ -21,7 +21,7 @@
  * we will make it symmetric.
  */
 void testMST(char* path) {
-    GraphInfo gi; 
+    GraphInfo gi;
     printf("Testing %s \n", path); 
     /* load and print the graph */
     gi = readGraphMakeSymm(path, LIST);
@@ -37,7 +37,6 @@ void testMST(char* path) {
 }
 
 int main() {
-  printf("%f\n", INFINITY - 2.0);
   printf("graphAlgtest: TESTING PRIM\n");
   
   testMST("triangleMST.txt"); // a simple graph
